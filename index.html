@@ -5,21 +5,64 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex,nofollow">
   <title>Переход...</title>
+
+  <script type="text/javascript">
+    (function(m,e,t,r,i,k,a){
+      m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+      m[i].l=1*new Date();
+      k=e.createElement(t),a=e.getElementsByTagName(t)[0];
+      k.async=1;
+      k.src=r;
+      a.parentNode.insertBefore(k,a);
+    })(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(108201790, "init", {
+      clickmap: true,
+      trackLinks: true,
+      accurateTrackBounce: true,
+      webvisor: true
+    });
+  </script>
 </head>
 <body>
-  <div id="status">Проверяем ссылку...</div>
+  <div id="status">Переход на товар...</div>
 
   <script>
     const params = new URLSearchParams(window.location.search);
     const target = params.get("target");
+    const product = params.get("product") || "unknown";
+    const brand = params.get("brand") || "unknown";
+    const category = params.get("category") || "unknown";
     const statusEl = document.getElementById("status");
 
     statusEl.innerText = "TARGET: " + target;
 
-    if (target) {
-      setTimeout(() => {
+    function goToTarget() {
+      if (target) {
         window.location.replace(target);
-      }, 1000);
+      } else {
+        statusEl.innerText = "Ошибка: параметр target не найден";
+      }
+    }
+
+    if (target) {
+      try {
+        ym(108201790, "params", {
+          product: product,
+          brand: brand,
+          category: category
+        });
+
+        ym(108201790, "reachGoal", "click_to_lamoda", {
+          product: product,
+          brand: brand,
+          category: category
+        });
+      } catch (e) {
+        console.log("Метрика не успела загрузиться", e);
+      }
+
+      setTimeout(goToTarget, 800);
     } else {
       statusEl.innerText = "Ошибка: параметр target не найден";
     }
