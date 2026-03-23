@@ -1,59 +1,28 @@
 <!doctype html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="robots" content="noindex,nofollow" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex,nofollow">
   <title>Переход...</title>
-
-  <!-- Яндекс Метрика -->
-  <script type="text/javascript">
-    (function(m,e,t,r,i,k,a){
-      m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-      m[i].l=1*new Date();
-      k=e.createElement(t),a=e.getElementsByTagName(t)[0];
-      k.async=1;k.src=r;a.parentNode.insertBefore(k,a)
-    })(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
-
-    ym(108201790, "init", {
-      clickmap:true,
-      trackLinks:true,
-      accurateTrackBounce:true,
-      webvisor:true
-    });
-  </script>
 </head>
 <body>
-  <p>Переход на товар...</p>
+  <div id="status">Проверяем ссылку...</div>
 
   <script>
-    const url = new URL(window.location.href);
-    const p = url.searchParams;
+    const params = new URLSearchParams(window.location.search);
+    const target = params.get("target");
+    const statusEl = document.getElementById("status");
 
-    const target = p.get('target');
-    const product = p.get('product') || 'unknown';
-    const brand = p.get('brand') || 'unknown';
-    const category = p.get('category') || 'unknown';
+    statusEl.innerText = "TARGET: " + target;
 
-    if (typeof ym === 'function') {
-      ym(XXXXXXXX, 'params', {
-        product: product,
-        brand: brand,
-        category: category
-      });
-
-      ym(XXXXXXXX, 'reachGoal', 'click_to_lamoda', {
-        product: product
-      });
-    }
-
-    setTimeout(() => {
-      if (target) {
+    if (target) {
+      setTimeout(() => {
         window.location.replace(target);
-      } else {
-        document.body.innerHTML = 'Ошибка: нет target';
-      }
-    }, 300);
+      }, 1000);
+    } else {
+      statusEl.innerText = "Ошибка: параметр target не найден";
+    }
   </script>
 </body>
 </html>
